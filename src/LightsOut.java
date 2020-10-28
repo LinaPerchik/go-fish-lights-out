@@ -12,6 +12,7 @@ public class LightsOut extends DuoPlay{
     int[][] board;
 
     /**
+     * Creates a board and fills it randomly with 0s and 1 s
      * @param player1 first player of the game
      * @param player2 second player of the game
      * @param boardSize the number of tiles in each row and column
@@ -20,6 +21,7 @@ public class LightsOut extends DuoPlay{
         super(player1, player2);
         // Creating board with boardSize by boardSize tiles
         board = new int[boardSize][boardSize];
+        this.randomize();
     }
 
     /**

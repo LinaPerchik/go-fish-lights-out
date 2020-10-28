@@ -26,8 +26,6 @@ public class Driver {
         LightsOutPlayer player2 = new LightsOutPlayer(playerName2);
         // Creating an object representing the game of lights out
         LightsOut lightsOut = new LightsOut(player1, player2, boardSize);
-        // Turning random lights on and off
-        lightsOut.randomize();
         // Starting the game
         lightsOut.play();
     }

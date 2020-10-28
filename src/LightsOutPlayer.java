@@ -42,7 +42,7 @@ public class LightsOutPlayer extends DuoPlayer{
         ((LightsOut)duoPlay).press(row, column);
         // Checking if the move ended in all lights being dark and declaring
         // a victory if that is the case
-        if(((LightsOut) duoPlay).isDark()){
+        if(((LightsOut)duoPlay).isDark()){
             return gameState.WON;
         }
         // Continue the game if there is at least one light
