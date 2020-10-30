@@ -19,6 +19,7 @@ public class Driver {
         playerName1 = scanner.next();
         System.out.println("Please enter the name of player #2: ");
         playerName2 = scanner.next();
+        /*
         System.out.println("Please enter the size of the board: ");
         boardSize = scanner.nextInt();
         // Creating objects representing the 2 players
@@ -28,5 +29,13 @@ public class Driver {
         LightsOut lightsOut = new LightsOut(player1, player2, boardSize);
         // Starting the game
         lightsOut.play();
+         */
+        GoFishPlayer player3 = new GoFishPlayer(playerName1);
+        GoFishPlayer player4 = new GoFishPlayer(playerName2);
+        // Creating an object representing the game of lights out
+        GoFish goFish = new GoFish(player3, player4);
+        // Starting the game
+        goFish.play();
+
     }
 }

@@ -36,7 +36,8 @@ abstract public class DuoPlay {
         while (gs == gameState.IN_PROGRESS){
             // Player1's move
             System.out.println(player1.getName() + "'s turn!");
-            gs = player1.move(this);
+            System.out.println(" ");
+            gs = player1.move(this, player1);
             // If he or she won or the draw happened
             if(gs != gameState.IN_PROGRESS) {
                 // Changing the name for the winning quote
@@ -48,7 +49,8 @@ abstract public class DuoPlay {
             else{
                 // Player2's move
                 System.out.println(player2.getName() + "'s turn!");
-                gs = player2.move(this);
+                System.out.println(" ");
+                gs = player2.move(this, player2);
             }
         }
         // If someone won

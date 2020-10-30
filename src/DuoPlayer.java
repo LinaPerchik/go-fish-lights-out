@@ -34,5 +34,5 @@ abstract public class DuoPlayer {
      * @return enum showing whether tha game is in progress, has
      *         been won, or ended in a draw(IN_PROGRESS, WON, DRAW.
      */
-    abstract public gameState move(DuoPlay duoPlay);
+    abstract public gameState move(DuoPlay duoPlay, DuoPlayer duoPlayer);
 }

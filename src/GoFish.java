@@ -1,6 +1,7 @@
-
-import java.lang.reflect.Array;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 public class GoFish extends DuoPlay{
     Map<Integer, String> cardValue = new HashMap<>();
     ArrayList<Integer> cardDeck = new ArrayList<>();
@@ -23,39 +24,39 @@ public class GoFish extends DuoPlay{
         getCard(player2);
     }
     public void fillCardValue(){
-        String cardName = "";
+        StringBuilder cardName = new StringBuilder();
         int counter = 0;
         for(int i = 0; i < 52; i++){
             if((i+4) % 4 == 0){
-                cardName += "Clubs";
+                cardName.append("Clubs");
                 counter++;
             }
             else if((i+3) % 4 == 0){
-                cardName += "Diamonds";
+                cardName.append("Diamonds");
             }
             else if((i+2) % 4 == 0){
-                cardName += "Hearts";
+                cardName.append("Hearts");
             }
             else{
-                cardName += "Spades";
+                cardName.append("Spades");
             }
             if(counter == 1){
-                cardName += " - Ace";
+                cardName.append(" - Ace");
             }
             else if(counter == 11){
-                cardName += " - Jack";
+                cardName.append(" - Jack");
             }
             else if(counter == 12){
-                cardName += " - Queen";
+                cardName.append(" - Queen");
             }
             else if(counter == 13){
-                cardName += " - King";
+                cardName.append(" - King");
             }
             else{
-                cardName += (" - " + counter);
+                cardName.append(" - ").append(counter);
             }
-            cardValue.put(i,cardName);
-            cardName = "";
+            cardValue.put(i, cardName.toString());
+            cardName = new StringBuilder();
         }
     }
 
@@ -67,6 +68,7 @@ public class GoFish extends DuoPlay{
     }
 
     public void getCard(DuoPlayer player){
+        System.out.println("You pulled " + cardValue.get(cardDeck.get(cardDeck.size()-1)) + " from the deck");
         if(player == player1){
             deck1.add(cardDeck.get(cardDeck.size()-1));
         }
@@ -78,30 +80,37 @@ public class GoFish extends DuoPlay{
     }
     public boolean askForCard(DuoPlayer player,Integer card){
         boolean success = false;
-        ArrayList<Integer> toRemove= new ArrayList<>();
+        ArrayList<Integer> toRemove = new ArrayList<>();
+        ArrayList<Integer> tempDeck;
+        ArrayList<Integer> enemyDeck;
         if(player == player1){
-            for(int i = 0; i <= deck2.size(); i++){
-                if(deck2.get(i) % card >= 0 && deck2.get(i) % card <=3){
-                    success = true;
-                    deck1.add(deck2.get(i));
-                    toRemove.add(deck2.get(i));
-                }
-            }
-            for(Integer integer : toRemove){
-                deck1.remove(integer);
-            }
+            tempDeck = deck1;
+            enemyDeck = deck2;
         }
         else{
-            for(int i = 0; i <= deck1.size(); i++){
-                if(deck1.get(i) % card >= 0 && deck1.get(i) % card <=3){
-                    success = true;
-                    deck2.add(deck1.get(i));
-                    toRemove.add(deck1.get(i));
-                }
+            tempDeck = deck2;
+            enemyDeck = deck1;
+        }
+        for(int i = 0; i <= enemyDeck.size() - 1; i++){
+            if((card * 4 - 1) == enemyDeck.get(i)
+                    ||(card * 4 - 2) == enemyDeck.get(i)
+                    ||(card * 4 - 3) == enemyDeck.get(i)
+                    ||(card * 4 - 4) == enemyDeck.get(i)){
+                success = true;
+                tempDeck.add(enemyDeck.get(i));
+                toRemove.add(enemyDeck.get(i));
             }
-            for(Integer integer : toRemove){
-                deck1.remove(integer);
-            }
+        }
+
+        for(Integer integer : toRemove){
+            enemyDeck.remove(integer);
+        }
+
+        if(success){
+            System.out.println("Yay! You guessed the card! You get another turn!");
+        }
+        else {
+            System.out.println("Tough luck! You didn't guess correctly!");
         }
         return success;
     }
@@ -109,8 +118,9 @@ public class GoFish extends DuoPlay{
     public boolean checkForNewBook(DuoPlayer player){
         ArrayList<Integer> toRemove= new ArrayList<>();
         ArrayList<Integer> tempDeck;
-        int sameCard = 0;
+        int sameCard;
         boolean success = false;
+        String rank;
         if(player == player1){
             tempDeck = deck1;
         }
@@ -119,25 +129,52 @@ public class GoFish extends DuoPlay{
         }
 
         for (int i = 1; i <= 13; i++) {
-            for(int j = 0; j <= tempDeck.size(); j++){
-                if(tempDeck.get(j) % i >= 0 && tempDeck.get(j) % i <=3){
+            if(i == 1){
+                rank = "Ace";
+            }
+            else if( i < 11){
+                rank = String.valueOf(i);
+            }
+            else if(i == 11){
+                rank = "Jack";
+            }
+            else if(i == 12){
+                rank = "Queen";
+            }
+            else{
+                rank = "King";
+            }
+            toRemove.clear();
+            sameCard = 0;
+            for (int j = 0; j <= tempDeck.size() - 1; j++) {
+                if ((i * 4 - 1) == tempDeck.get(j)
+                        || (i * 4 - 2) == tempDeck.get(j)
+                        || (i * 4 - 3) == tempDeck.get(j)
+                        || (i * 4 - 4) == tempDeck.get(j)) {
                     sameCard++;
-                    toRemove.add(j);
-                    if(sameCard == 4) {
+                    toRemove.add(tempDeck.get(j));
+                    if (sameCard == 4) {
+                        System.out.println("You got a book of " + rank);
                         if (player == player1) {
                             bookCounter1++;
                         } else {
                             bookCounter2++;
                         }
                         success = true;
-                        sameCard = 0;
+                        for (Integer integer : toRemove) {
+                            tempDeck.remove(integer);
+                        }
+
                     }
-                    toRemove.add(tempDeck.get(j));
                 }
             }
-            for (Integer integer : toRemove) {
-                tempDeck.remove(integer);
-            }
+
+        }
+        if(success){
+            System.out.println("Yay! You got a new book! You get another turn!");
+        }
+        else {
+            System.out.println("Tough luck! No new books from you! It's another player's turn");
         }
         return success;
     }
@@ -163,22 +200,52 @@ public class GoFish extends DuoPlay{
     }
 
     public String toString(){
-        String stringRep = "";
+        StringBuilder stringRep = new StringBuilder();
         ArrayList<Integer> tempDeck;
         for(int i = 0; i < 2; i++) {
             if(i == 0) {
-                stringRep += player1.name + "'s Deck: \n";
+                System.out.println(player1.name + " has " + bookCounter1 + " books");
+                stringRep.append(player1.name).append("'s Deck: \n");
                 tempDeck = deck1;
             }
             else{
-                stringRep += player2.name + "'s Deck: \n";
+                System.out.println(player2.name + " has " + bookCounter2 + " books");
+                stringRep.append(player2.name).append("'s Deck: \n");
                 tempDeck = deck2;
             }
-            for(int j = 0; j <= tempDeck.size(); j++){
-                stringRep += (cardValue.get(tempDeck.get(j)) + "\n");
+            for(int j = 0; j <= tempDeck.size() - 1; j++){
+                stringRep.append(cardValue.get(tempDeck.get(j))).append("\n");
             }
-            stringRep += " \n";
+            stringRep.append(" \n");
         }
-        return stringRep;
+        return stringRep.toString();
     }
+
+    public boolean goFishInDeck(int card, DuoPlayer player){
+        boolean success = false;
+        ArrayList<Integer> tempDeck;
+        if(player == player1) {
+            tempDeck = deck1;
+        }
+        else {
+            tempDeck = deck2;
+        }
+        getCard(player);
+        if((card * 4 - 1) == (tempDeck.get(tempDeck.size()-1))
+                ||(card * 4 - 2) == (tempDeck.get(tempDeck.size()-1))
+                ||(card * 4 - 3) == (tempDeck.get(tempDeck.size()-1))
+                ||(card * 4 - 4) == (tempDeck.get(tempDeck.size()-1)))
+        {
+            success = true;
+        }
+        if(success){
+            System.out.println("Yay! You successfully fished out the right card from the deck!" +
+                    " You get another turn");
+        }
+        else {
+            System.out.println("Tough luck! You didn't fish out the right card!");
+        }
+        return success;
+    }
+
 }

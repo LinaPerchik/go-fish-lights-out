@@ -28,7 +28,7 @@ public class LightsOutPlayer extends DuoPlayer{
      * @return the state of the game after a move
      */
     @Override
-    public gameState move(DuoPlay duoPlay) {
+    public gameState move(DuoPlay duoPlay, DuoPlayer duoPlayer) {
         int row, column;
         System.out.println(duoPlay.toString());
         // Prompting user input (the location to be pressed)
