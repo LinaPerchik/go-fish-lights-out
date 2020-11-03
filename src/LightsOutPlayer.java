@@ -25,6 +25,7 @@ public class LightsOutPlayer extends DuoPlayer{
      * a victory or the game is still in progress
      *
      * @param duoPlay the game that is being played by the 2 players
+     * @param duoPlayer the player making a move
      * @return the state of the game after a move
      */
     @Override

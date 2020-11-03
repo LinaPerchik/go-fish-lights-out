@@ -31,6 +31,7 @@ abstract public class DuoPlayer {
      * Represents a move that a player can make
      *
      * @param duoPlay the game that is being played by the 2 players
+     * @param duoPlayer the player making a move
      * @return enum showing whether tha game is in progress, has
      *         been won, or ended in a draw(IN_PROGRESS, WON, DRAW.
      */
